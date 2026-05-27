@@ -10,5 +10,5 @@ func main() {
 
 	reports := crawl(feeds)
 
-	print(reports)
+	printReport(reports)
 }

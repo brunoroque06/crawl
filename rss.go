@@ -33,6 +33,7 @@ func rss(body string) ([]Item, error) {
 		if err != nil {
 			pubDate, err = time.Parse(time.RFC1123, entry.PubDate)
 			if err != nil {
+				stderr("error parsing date ", err.Error())
 				continue
 			}
 		}

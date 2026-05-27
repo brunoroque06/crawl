@@ -26,7 +26,7 @@ type Report struct {
 }
 
 func fetch(source Source) ([]Item, error) {
-	body, err := get(source.Url())
+	body, err := get(source.Url(), nil)
 	if err != nil {
 		return nil, err
 	}

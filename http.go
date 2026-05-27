@@ -1,14 +1,19 @@
 package main
 
 import (
+	"errors"
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
-var client = &http.Client{}
+var defaultClient = &http.Client{Timeout: 10 * time.Second}
 
-func get(url string) (string, error) {
+func get(url string, client *http.Client) (string, error) {
+	if client == nil {
+		client = defaultClient
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
@@ -19,6 +24,9 @@ func get(url string) (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return "", errors.New("Status code " + resp.Status)
+	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
