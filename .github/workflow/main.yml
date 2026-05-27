@@ -1,0 +1,12 @@
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable
+      - run: make fmt-check
+      - run: make build
