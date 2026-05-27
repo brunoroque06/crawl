@@ -7,7 +7,7 @@ import (
 
 type Reddit struct{ Sub string }
 
-func (r Reddit) Url() string {
+func (r Reddit) GetUrl() string {
 	return fmt.Sprintf("https://www.reddit.com/r/%s/hot.json?limit=%d", r.Sub, last)
 }
 func (r Reddit) Parse(body string) ([]Item, error) { return reddit(body) }

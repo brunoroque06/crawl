@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-type Rss struct{ URL string }
+type Rss struct{ Url string }
 
-func (r Rss) Url() string                       { return r.URL }
+func (r Rss) GetUrl() string                    { return r.Url }
 func (r Rss) Parse(body string) ([]Item, error) { return rss(body) }
 
 type RssResponse struct {

@@ -15,7 +15,7 @@ type Item struct {
 }
 
 type Source interface {
-	Url() string
+	GetUrl() string
 	Parse(body string) ([]Item, error)
 }
 
@@ -26,7 +26,7 @@ type Report struct {
 }
 
 func fetch(source Source) ([]Item, error) {
-	body, err := get(source.Url(), nil)
+	body, err := get(source.GetUrl(), nil)
 	if err != nil {
 		return nil, err
 	}

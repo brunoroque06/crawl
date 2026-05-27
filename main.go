@@ -7,8 +7,6 @@ const (
 
 func main() {
 	feeds := []Feed{}
-
 	reports := crawl(feeds)
-
-	printReport(reports)
+	report(reports)
 }
