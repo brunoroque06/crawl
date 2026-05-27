@@ -6,7 +6,7 @@ const (
 )
 
 func main() {
-	feeds := []Feed{}
+	feeds := parseFeeds()
 	reports := crawl(feeds)
 	report(reports)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -25,7 +24,7 @@ func get(url string, client *http.Client) (string, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		return "", errors.New("Status code " + resp.Status)
+		return "", errorf("Status code %s", resp.Status)
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

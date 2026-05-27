@@ -5,24 +5,24 @@ import (
 	"os"
 )
 
-func stderr(s ...any) {
-	fmt.Fprintln(os.Stderr, s...)
+func stderr(a ...any) {
+	fmt.Fprintln(os.Stderr, a...)
 }
 
-func stdout(s ...any) {
-	fmt.Println(s...)
+func stdout(a ...any) {
+	fmt.Println(a...)
 }
 
-func report(report []Report) {
-	for _, feed := range report {
+func report(reports []Report) {
+	for _, feed := range reports {
 		stdout(feed.Name)
 		if feed.Error != nil {
-			stdout("  error: ", feed.Error.Error())
+			stdout("  error:", feed.Error.Error())
 			stdout()
 			continue
 		}
 		for _, item := range feed.Items {
-			stdout("  ", item.Title, cleanUrl(item.Url))
+			stdout(" ", item.Title, cleanUrl(item.Url))
 		}
 		stdout()
 	}
