@@ -2,6 +2,7 @@ package main
 
 import (
 	"sync"
+	"time"
 )
 
 type Feed struct {
@@ -12,6 +13,7 @@ type Feed struct {
 type Item struct {
 	Title string
 	Url   string
+	Pub   time.Time
 }
 
 type Source interface {
@@ -34,7 +36,17 @@ func fetch(source Source) ([]Item, error) {
 	if err != nil {
 		return nil, err
 	}
-	return items, nil
+	var filtered []Item
+	now := time.Now()
+	for _, i := range items {
+		if now.Sub(i.Pub) < cutOffHours*time.Hour {
+			filtered = append(filtered, i)
+			if len(filtered) == last {
+				break
+			}
+		}
+	}
+	return filtered, nil
 }
 
 func crawl(feeds []Feed) []Report {
@@ -53,4 +65,19 @@ func crawl(feeds []Feed) []Report {
 
 	wg.Wait()
 	return reports
+}
+
+func report(reports []Report) {
+	for _, feed := range reports {
+		stdout(feed.Name)
+		if feed.Error != nil {
+			stdout("  error:", feed.Error.Error())
+			stdout()
+			continue
+		}
+		for _, item := range feed.Items {
+			stdout(" ", item.Title, cleanUrl(item.Url))
+		}
+		stdout()
+	}
 }

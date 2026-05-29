@@ -11,8 +11,9 @@ var sources = []struct {
 	usage string
 	build func(value string) Source
 }{
+	{"atom", "name=url", func(v string) Source { return Atom{Url: v} }},
 	{"gnews", "name=query", func(v string) Source { return Gnews{Query: v} }},
-	{"reddit", "name=subreddit", func(v string) Source { return Reddit{Sub: v} }},
+	{"reddit", "name=sub", func(v string) Source { return Reddit{Sub: v} }},
 	{"rss", "name=url", func(v string) Source { return Rss{Url: v} }},
 }
 

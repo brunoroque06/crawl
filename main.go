@@ -2,7 +2,7 @@ package main
 
 const (
 	last        = 8
-	cutOffHours = 36
+	cutOffHours = 25
 )
 
 func main() {
