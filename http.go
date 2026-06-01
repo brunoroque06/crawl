@@ -17,13 +17,14 @@ func get(url string, client *http.Client) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	req.Header.Set("User-Agent", "crawler")
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return "", errorf("Status code %s", resp.Status)
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		return "", errorf("status code %s", resp.Status)
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
