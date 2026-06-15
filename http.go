@@ -17,7 +17,7 @@ func get(url string, client *http.Client) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("User-Agent", "crawler")
+	req.Header.Set("User-Agent", "crawl")
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
