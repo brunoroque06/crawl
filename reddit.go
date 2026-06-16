@@ -4,9 +4,9 @@ import (
 	"fmt"
 )
 
-type Reddit struct{ Sub string }
+type reddit struct{ sub string }
 
-func (r Reddit) GetUrl() string {
-	return fmt.Sprintf("https://www.reddit.com/r/%s/.rss", r.Sub)
+func (r reddit) getUrl() string {
+	return fmt.Sprintf("https://www.reddit.com/r/%s/.rss", r.sub)
 }
-func (r Reddit) Parse(body string) ([]Item, error) { return atom(body) }
+func (r reddit) parse(body string) ([]item, error) { return atomParse(body) }

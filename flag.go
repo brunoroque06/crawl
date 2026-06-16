@@ -9,16 +9,16 @@ import (
 var sources = []struct {
 	name  string
 	usage string
-	build func(value string) Source
+	build func(value string) source
 }{
-	{"atom", "name=url", func(v string) Source { return Atom{Url: v} }},
-	{"gnews", "name=query", func(v string) Source { return Gnews{Query: v} }},
-	{"reddit", "name=sub", func(v string) Source { return Reddit{Sub: v} }},
-	{"rss", "name=url", func(v string) Source { return Rss{Url: v} }},
+	{"atom", "name=url", func(v string) source { return atom{url: v} }},
+	{"gnews", "name=query", func(v string) source { return gnews{query: v} }},
+	{"reddit", "name=sub", func(v string) source { return reddit{sub: v} }},
+	{"rss", "name=url", func(v string) source { return rss{url: v} }},
 }
 
-func parseFeeds() []Feed {
-	var feeds []Feed
+func parseFeeds() []feed {
+	var feeds []feed
 
 	for _, def := range sources {
 		flag.Func(def.name, def.usage+" (repeatable)", func(s string) error {
@@ -26,7 +26,7 @@ func parseFeeds() []Feed {
 			if !ok {
 				return errorf("expected %s, got %q", def.usage, s)
 			}
-			feeds = append(feeds, Feed{Name: name, Src: def.build(val)})
+			feeds = append(feeds, feed{name: name, src: def.build(val)})
 			return nil
 		})
 	}

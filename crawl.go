@@ -5,30 +5,30 @@ import (
 	"time"
 )
 
-type Feed struct {
-	Name string
-	Src  Source
+type feed struct {
+	name string
+	src  source
 }
 
-type Report struct {
-	Name  string
-	Items []Item
-	Error error
+type report struct {
+	name  string
+	items []item
+	error error
 }
 
-func fetch(source Source) ([]Item, error) {
-	body, err := get(source.GetUrl(), nil)
+func fetch(source source) ([]item, error) {
+	body, err := get(source.getUrl(), nil)
 	if err != nil {
 		return nil, err
 	}
-	items, err := source.Parse(body)
+	items, err := source.parse(body)
 	if err != nil {
 		return nil, err
 	}
-	var filtered []Item
+	var filtered []item
 	now := time.Now()
 	for _, i := range items {
-		if now.Sub(i.Pub) < cutOffHours*time.Hour {
+		if now.Sub(i.pub) < cutOffHours*time.Hour {
 			filtered = append(filtered, i)
 			if len(filtered) == last {
 				break
@@ -38,16 +38,16 @@ func fetch(source Source) ([]Item, error) {
 	return filtered, nil
 }
 
-func crawl(feeds []Feed) []Report {
+func crawl(feeds []feed) []report {
 	var mu sync.Mutex
-	var reports []Report
+	var reports []report
 	var wg sync.WaitGroup
 
 	for _, f := range feeds {
 		wg.Go(func() {
-			items, err := fetch(f.Src)
+			items, err := fetch(f.src)
 			mu.Lock()
-			reports = append(reports, Report{Name: f.Name, Items: items, Error: err})
+			reports = append(reports, report{name: f.name, items: items, error: err})
 			mu.Unlock()
 		})
 	}
@@ -56,16 +56,16 @@ func crawl(feeds []Feed) []Report {
 	return reports
 }
 
-func report(reports []Report) {
+func deliver(reports []report) {
 	for _, feed := range reports {
-		stdout(feed.Name)
-		if feed.Error != nil {
-			stdout("  error:", feed.Error.Error())
+		stdout(feed.name)
+		if feed.error != nil {
+			stdout("  error:", feed.error.Error())
 			stdout()
 			continue
 		}
-		for _, item := range feed.Items {
-			stdout(" ", item.Title, cleanUrl(item.Url))
+		for _, item := range feed.items {
+			stdout(" ", item.title, cleanUrl(item.url))
 		}
 		stdout()
 	}

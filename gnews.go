@@ -2,10 +2,10 @@ package main
 
 import "net/url"
 
-type Gnews struct{ Query string }
+type gnews struct{ query string }
 
-func (g Gnews) GetUrl() string {
-	query := url.QueryEscape(g.Query)
+func (g gnews) getUrl() string {
+	query := url.QueryEscape(g.query)
 	return "https://news.google.com/rss/search?hl=en-US&gl=US&ceid=US%3Aen&q=" + query
 }
-func (g Gnews) Parse(body string) ([]Item, error) { return rss(body) }
+func (g gnews) parse(body string) ([]item, error) { return rssParse(body) }

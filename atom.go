@@ -4,32 +4,32 @@ import (
 	"encoding/xml"
 )
 
-type Atom struct{ Url string }
+type atom struct{ url string }
 
-func (a Atom) GetUrl() string {
-	return a.Url
+func (a atom) getUrl() string {
+	return a.url
 }
-func (r Atom) Parse(body string) ([]Item, error) { return atom(body) }
+func (r atom) parse(body string) ([]item, error) { return atomParse(body) }
 
-type AtomFeed struct {
+type atomFeed struct {
 	Entries []struct {
 		Title string `xml:"title"`
 		Link  struct {
 			Href string `xml:"href,attr"`
 		} `xml:"link"`
-		Updated DesTime `xml:"updated"`
+		Updated desTime `xml:"updated"`
 	} `xml:"entry"`
 }
 
-func atom(body string) ([]Item, error) {
-	var feed AtomFeed
+func atomParse(body string) ([]item, error) {
+	var feed atomFeed
 	err := xml.Unmarshal([]byte(body), &feed)
 	if err != nil {
 		return nil, err
 	}
-	var items []Item
+	var items []item
 	for _, entry := range feed.Entries {
-		items = append(items, Item{Pub: entry.Updated.Time, Title: entry.Title, Url: entry.Link.Href})
+		items = append(items, item{pub: entry.Updated.Time, title: entry.Title, url: entry.Link.Href})
 	}
 	return items, nil
 }

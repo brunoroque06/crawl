@@ -8,5 +8,5 @@ const (
 func main() {
 	feeds := parseFeeds()
 	reports := crawl(feeds)
-	report(reports)
+	deliver(reports)
 }

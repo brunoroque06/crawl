@@ -4,30 +4,30 @@ import (
 	"encoding/xml"
 )
 
-type Rss struct{ Url string }
+type rss struct{ url string }
 
-func (r Rss) GetUrl() string                    { return r.Url }
-func (r Rss) Parse(body string) ([]Item, error) { return rss(body) }
+func (r rss) getUrl() string                    { return r.url }
+func (r rss) parse(body string) ([]item, error) { return rssParse(body) }
 
-type RssResponse struct {
+type rssResponse struct {
 	Channel struct {
 		Items []struct {
 			Title   string  `xml:"title"`
 			Link    string  `xml:"link"`
-			PubDate DesTime `xml:"pubDate"`
+			PubDate desTime `xml:"pubDate"`
 		} `xml:"item"`
 	} `xml:"channel"`
 }
 
-func rss(body string) ([]Item, error) {
-	var r RssResponse
+func rssParse(body string) ([]item, error) {
+	var r rssResponse
 	err := xml.Unmarshal([]byte(body), &r)
 	if err != nil {
 		return nil, err
 	}
-	var items []Item
+	var items []item
 	for _, entry := range r.Channel.Items {
-		items = append(items, Item{Pub: entry.PubDate.Time, Title: entry.Title, Url: entry.Link})
+		items = append(items, item{pub: entry.PubDate.Time, title: entry.Title, url: entry.Link})
 	}
 	return items, nil
 }

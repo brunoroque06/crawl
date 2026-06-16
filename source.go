@@ -4,13 +4,13 @@ import (
 	"time"
 )
 
-type Item struct {
-	Title string
-	Url   string
-	Pub   time.Time
+type item struct {
+	title string
+	url   string
+	pub   time.Time
 }
 
-type Source interface {
-	GetUrl() string
-	Parse(body string) ([]Item, error)
+type source interface {
+	getUrl() string
+	parse(body string) ([]item, error)
 }

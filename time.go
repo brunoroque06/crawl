@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-type DesTime struct{ time.Time }
+type desTime struct{ time.Time }
 
-func (t *DesTime) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (t *desTime) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var s string
 	if err := d.DecodeElement(&s, &start); err != nil {
 		return err
