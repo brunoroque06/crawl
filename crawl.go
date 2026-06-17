@@ -39,16 +39,13 @@ func fetch(source source) ([]item, error) {
 }
 
 func crawl(feeds []feed) []report {
-	var mu sync.Mutex
-	var reports []report
 	var wg sync.WaitGroup
+	reports := make([]report, len(feeds))
 
-	for _, f := range feeds {
+	for i, f := range feeds {
 		wg.Go(func() {
 			items, err := fetch(f.src)
-			mu.Lock()
-			reports = append(reports, report{name: f.name, items: items, error: err})
-			mu.Unlock()
+			reports[i] = report{name: f.name, items: items, error: err}
 		})
 	}
 
