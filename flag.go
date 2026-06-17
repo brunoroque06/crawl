@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+var (
+	last   = flag.Int("last", 8, "items per feed")
+	cutoff = flag.Int("cutoff", 25, "ignore older than (in hours)")
+)
+
 var sources = []struct {
 	name  string
 	usage string
@@ -21,7 +26,7 @@ func parseFeeds() []feed {
 	var feeds []feed
 
 	for _, def := range sources {
-		flag.Func(def.name, def.usage+" (repeatable)", func(s string) error {
+		flag.Func(def.name, def.usage, func(s string) error {
 			name, val, ok := strings.Cut(s, "=")
 			if !ok {
 				return errorf("expected %s, got %q", def.usage, s)

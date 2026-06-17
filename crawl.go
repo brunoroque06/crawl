@@ -28,9 +28,9 @@ func fetch(source source) ([]item, error) {
 	var filtered []item
 	now := time.Now()
 	for _, i := range items {
-		if now.Sub(i.pub) < cutOffHours*time.Hour {
+		if now.Sub(i.pub) < time.Duration(*cutoff)*time.Hour {
 			filtered = append(filtered, i)
-			if len(filtered) == last {
+			if len(filtered) == *last {
 				break
 			}
 		}

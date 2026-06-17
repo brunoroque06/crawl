@@ -9,7 +9,7 @@ type atom struct{ url string }
 func (a atom) getUrl() string {
 	return a.url
 }
-func (r atom) parse(body string) ([]item, error) { return atomParse(body) }
+func (a atom) parse(body string) ([]item, error) { return atomParse(body) }
 
 type atomFeed struct {
 	Entries []struct {
